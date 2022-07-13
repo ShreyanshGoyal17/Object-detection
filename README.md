@@ -31,3 +31,41 @@ FCOS has three prediction layers, that use the following use functions:
 ![Screenshot 2022-07-08 170222](https://user-images.githubusercontent.com/94932358/178760103-34054292-ef2e-437d-ad79-ae230041a782.png)
 ![Screenshot 2022-07-08 170313](https://user-images.githubusercontent.com/94932358/178760145-bd9b90c5-9bff-4288-9cd6-e388fb8bf91a.png)
 ![Screenshot 2022-07-08 170200](https://user-images.githubusercontent.com/94932358/178760354-6ef66594-49c3-4d47-984d-1833008a63ca.png)
+
+## 2. Faster R-CNN
+
+Object detection system, called Faster R-CNN, is composed of two modules. The first module is a deep fully convolutional network that proposes regions,
+and the second module is the Fast R-CNN detector that uses the proposed regions. The entire system is a single, unified network for object detection (see figure). Faster R-CNN uses a convolutional backbone with FPN in the exact same way as we implemented in FCOS.
+
+![image](https://user-images.githubusercontent.com/94932358/178767469-8f52b55b-8d13-4060-b3d7-6536df37e0f7.png)
+
+### First stage - Region Proposal Network (RPN)
+It comprises a Region Proposal Network (RPN) that learns to predict general object proposals, which will then be used by the second stage to make final predictions.
+RPN prediction: An input image is passed through the backbone and we obtain its FPN feature maps (p3, p4, p5). The RPN predicts multiple values at every location on FPN features. Faster R-CNN is anchor-based — the model assumes that every location has multiple pre-defined boxes (called "anchors") and it predicts two measures per anchor, per FPN location:
+
+1. Objectness: The likelihood of having any object inside the anchor. This is similar to classification head in FCOS, except that** this is class-agnostic**: it only performs binary foreground/background classification.
+2. Box regression deltas: 4-D "deltas" that** transform an anchor at that location to a ground-truth box.
+
+![image](https://user-images.githubusercontent.com/94932358/178770079-0ad05284-81c3-40ac-b92a-300624951b43.png)
+
+
+
+### Training
+
+![Screenshot 2022-07-11 185144](https://user-images.githubusercontent.com/94932358/178771140-55701ea4-11c5-4510-824b-660ac9d1eac2.png)
+
+### Inference
+
+
+![Screenshot 2022-07-12 191354](https://user-images.githubusercontent.com/94932358/178771245-6b2840cf-2ab9-40a0-a787-cddf17a03f2a.png)
+![Screenshot 2022-07-12 191923](https://user-images.githubusercontent.com/94932358/178771302-48259d80-c463-481a-9bdb-525c8beb5590.png)
+![Screenshot 2022-07-12 191648](https://user-images.githubusercontent.com/94932358/178771319-b16e0e74-a7f2-4b5e-93d8-440547c4515f.png)
+![Screenshot 2022-07-12 191517](https://user-images.githubusercontent.com/94932358/178771402-0fa9e00d-7f4a-400a-9c94-d504e297df3e.png)
+![Screenshot 2022-07-12 191712](https://user-images.githubusercontent.com/94932358/178771556-776f3b87-8aea-4945-8bd2-0c7037f214cd.png)
+![Screenshot 2022-07-12 191835](https://user-images.githubusercontent.com/94932358/178772198-19c2e038-1bae-4995-a946-49d71e8157d0.png)
+
+## References
+1. https://arxiv.org/abs/1904.01355.pdf
+2. https://arxiv.org/pdf/1612.03144.pdf
+3. https://arxiv.org/pdf/1708.02002.pdf
+4. https://arxiv.org/pdf/1506.01497.pdf
